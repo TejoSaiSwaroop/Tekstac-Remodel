@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './HomeView.css';
 
 const HomeView = () => {
@@ -32,8 +33,9 @@ const HomeView = () => {
           </div>
           <div className="boards-grid">
             {recentBoards.map(board => (
-              <div key={board.id} className="board-card">
-                <div className="board-card-preview">
+              <Link key={board.id} to={`/board/${board.id}`} className="board-card-link">
+                <div className="board-card">
+                  <div className="board-card-preview">
                   <div className="preview-content">
                     <div className="preview-list">
                       <div className="preview-row blue"></div>

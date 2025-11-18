@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Task, TaskStatus, Priority } from '../../models/Task';
 import './BoardView.css';
 
 const BoardView = () => {
-  const { boardId } = useParams();
   const [selectedTask, setSelectedTask] = useState(null);
+  const [showAddTaskModal, setShowAddTaskModal] = useState(false);
+  const [newTask, setNewTask] = useState({
+    title: '',
+    status: TaskStatus.NOT_STARTED,
+    priority: Priority.MEDIUM,
+    dueDate: '',
+    notes: '',
+    owner: null
+  });
 
-  const todoTasks = [
+  const [tasks, setTasks] = useState([
     { id: 1, title: 'Welcome Mail Coach...', owner: null, status: 'Completed', dueDate: 'Sep 3', priority: null, notes: '', files: 1, timeline: 'Sep 1 - 3', lastUpdated: '13 minutes...' },
     { id: 2, title: 'Software Check', owner: null, status: 'Completed', dueDate: 'Sep 3', priority: null, notes: 'Delayed Due to S...', files: 0, timeline: 'Sep 1 - 3', lastUpdated: '13 minutes...' },
     { id: 3, title: 'Platform Access', owner: null, status: 'Completed', dueDate: 'Oct 3', priority: null, notes: '', files: 0, timeline: 'Sep 1 - 3', lastUpdated: '13 minutes...' },
@@ -16,19 +24,21 @@ const BoardView = () => {
     { id: 7, title: 'Delta Assessment', owner: null, status: 'Completed', dueDate: '', priority: null, notes: '', files: 0, timeline: 'Sep 12', lastUpdated: '2 hours ago' },
     { id: 8, title: 'BH Mock', owner: null, status: 'Completed', dueDate: '', priority: null, notes: '', files: 0, timeline: 'Oct 1 - 3', lastUpdated: '2 hours ago' },
     { id: 9, title: 'Hacker Rank Assessm...', owner: null, status: 'Not Applicable', dueDate: '', priority: null, notes: '', files: 0, timeline: '-', lastUpdated: '2 hours ago' },
-    { id: 10, title: 'Interim Evaluation', owner: '👤', status: 'Interim Comple...', dueDate: 'Oct 13', priority: 'Low', notes: 'Action items', files: 1, timeline: 'Oct 13 - 14', lastUpdated: '1 minute ago' },
+    { id: 10, title: 'Interim Evaluation', owner: '👤', status: 'Interim Completed', dueDate: 'Oct 13', priority: 'Low', notes: 'Action items', files: 1, timeline: 'Oct 13 - 14', lastUpdated: '1 minute ago' },
     { id: 11, title: 'ICT', owner: null, status: 'Completed', dueDate: 'Oct 14', priority: 'High', notes: 'Meeting notes', files: 0, timeline: 'Oct 15 - 16', lastUpdated: '4 hours ago' },
-    { id: 12, title: 'Final Evaluation', owner: null, status: 'Ready For Final...', dueDate: 'Oct 15', priority: 'Medium', notes: 'Other', files: 0, timeline: 'Oct 17 - 18', lastUpdated: 'Just now' }
-  ];
+    { id: 12, title: 'Final Evaluation', owner: null, status: 'Ready For Final Eval', dueDate: 'Oct 15', priority: 'Medium', notes: 'Other', files: 0, timeline: 'Oct 17 - 18', lastUpdated: 'Just now' }
+  ]);
 
+  // Helper functions
   const getStatusColor = (status) => {
     const colors = {
       'Completed': '#00c875',
       'Not Applicable': '#579bfc',
-      'Interim Comple...': '#fdab3d',
-      'Ready For Final...': '#ffcb00',
+      'Interim Completed': '#fdab3d',
+      'Ready For Final Eval': '#ffcb00',
       'Working on it': '#fdab3d',
-      'Stuck': '#e44258'
+      'Stuck': '#e44258',
+      'Not Started': '#c4c4c4'
     };
     return colors[status] || '#c4c4c4';
   };
@@ -40,6 +50,68 @@ const BoardView = () => {
       'High': '#401694'
     };
     return colors[priority] || 'transparent';
+  };
+
+  // Add task functionality
+  const handleAddTask = () => {
+    setShowAddTaskModal(true);
+  };
+
+  const handleSaveTask = () => {
+    if (newTask.title.trim()) {
+      const task = new Task(
+        Date.now(), // Simple ID generation
+        newTask.title,
+        newTask.status,
+        newTask.owner,
+        newTask.dueDate,
+        newTask.priority,
+        newTask.notes,
+        0, // files
+        newTask.dueDate ? `${newTask.dueDate}` : '-', // timeline
+        'Just now'
+      );
+      
+      setTasks([...tasks, task]);
+      setNewTask({
+        title: '',
+        status: TaskStatus.NOT_STARTED,
+        priority: Priority.MEDIUM,
+        dueDate: '',
+        notes: '',
+        owner: null
+      });
+      setShowAddTaskModal(false);
+    }
+  };
+
+  const handleCancelTask = () => {
+    setNewTask({
+      title: '',
+      status: TaskStatus.NOT_STARTED,
+      priority: Priority.MEDIUM,
+      dueDate: '',
+      notes: '',
+      owner: null
+    });
+    setShowAddTaskModal(false);
+  };
+
+  // Update task status/priority
+  const updateTaskStatus = (taskId, newStatus) => {
+    setTasks(tasks.map(task => 
+      task.id === taskId 
+        ? { ...task, status: newStatus, lastUpdated: 'Just now' }
+        : task
+    ));
+  };
+
+  const updateTaskPriority = (taskId, newPriority) => {
+    setTasks(tasks.map(task => 
+      task.id === taskId 
+        ? { ...task, priority: newPriority, lastUpdated: 'Just now' }
+        : task
+    ));
   };
 
   return (
@@ -103,7 +175,7 @@ const BoardView = () => {
               </tr>
             </thead>
             <tbody>
-              {todoTasks.map(task => (
+              {tasks.map(task => (
                 <tr 
                   key={task.id} 
                   className={`task-row ${selectedTask === task.id ? 'selected' : ''}`}
@@ -119,9 +191,16 @@ const BoardView = () => {
                     {task.owner && <div className="owner-avatar">{task.owner}</div>}
                   </td>
                   <td className="col-status">
-                    <div className="status-badge" style={{ backgroundColor: getStatusColor(task.status) }}>
-                      {task.status}
-                    </div>
+                    <select 
+                      className="status-dropdown"
+                      value={task.status}
+                      onChange={(e) => updateTaskStatus(task.id, e.target.value)}
+                      style={{ backgroundColor: getStatusColor(task.status) }}
+                    >
+                      {Object.values(TaskStatus).map(status => (
+                        <option key={status} value={status}>{status}</option>
+                      ))}
+                    </select>
                   </td>
                   <td className="col-due-date">
                     {task.dueDate && (
@@ -133,11 +212,17 @@ const BoardView = () => {
                     )}
                   </td>
                   <td className="col-priority">
-                    {task.priority && (
-                      <div className="priority-badge" style={{ backgroundColor: getPriorityColor(task.priority) }}>
-                        {task.priority}
-                      </div>
-                    )}
+                    <select 
+                      className="priority-dropdown"
+                      value={task.priority || ''}
+                      onChange={(e) => updateTaskPriority(task.id, e.target.value)}
+                      style={{ backgroundColor: getPriorityColor(task.priority) }}
+                    >
+                      <option value="">None</option>
+                      {Object.values(Priority).map(priority => (
+                        <option key={priority} value={priority}>{priority}</option>
+                      ))}
+                    </select>
                   </td>
                   <td className="col-notes">
                     {task.notes && <span className="notes-text">{task.notes}</span>}
@@ -167,7 +252,7 @@ const BoardView = () => {
               ))}
               <tr className="add-row">
                 <td colSpan="11">
-                  <button className="add-task-btn">+ Add task</button>
+                  <button className="add-task-btn" onClick={handleAddTask}>+ Add task</button>
                 </td>
               </tr>
             </tbody>
@@ -199,13 +284,85 @@ const BoardView = () => {
             <tbody>
               <tr className="add-row">
                 <td colSpan="11">
-                  <button className="add-task-btn">+ Add task</button>
+                  <button className="add-task-btn" onClick={handleAddTask}>+ Add task</button>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
+
+      {/* Add Task Modal */}
+      {showAddTaskModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Add New Task</h3>
+              <button className="modal-close" onClick={handleCancelTask}>×</button>
+            </div>
+            <div className="modal-body">
+              <div className="form-group">
+                <label>Task Title *</label>
+                <input
+                  type="text"
+                  value={newTask.title}
+                  onChange={(e) => setNewTask({...newTask, title: e.target.value})}
+                  placeholder="Enter task title"
+                />
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Status</label>
+                  <select
+                    value={newTask.status}
+                    onChange={(e) => setNewTask({...newTask, status: e.target.value})}
+                  >
+                    {Object.values(TaskStatus).map(status => (
+                      <option key={status} value={status}>{status}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div className="form-group">
+                  <label>Priority</label>
+                  <select
+                    value={newTask.priority}
+                    onChange={(e) => setNewTask({...newTask, priority: e.target.value})}
+                  >
+                    {Object.values(Priority).map(priority => (
+                      <option key={priority} value={priority}>{priority}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              
+              <div className="form-group">
+                <label>Due Date</label>
+                <input
+                  type="date"
+                  value={newTask.dueDate}
+                  onChange={(e) => setNewTask({...newTask, dueDate: e.target.value})}
+                />
+              </div>
+              
+              <div className="form-group">
+                <label>Notes</label>
+                <textarea
+                  value={newTask.notes}
+                  onChange={(e) => setNewTask({...newTask, notes: e.target.value})}
+                  placeholder="Add any notes or description"
+                  rows="3"
+                />
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="btn-cancel" onClick={handleCancelTask}>Cancel</button>
+              <button className="btn-save" onClick={handleSaveTask}>Add Task</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
