@@ -49,7 +49,7 @@ const BoardView = () => {
       'Medium': '#a25ddc',
       'High': '#401694'
     };
-    return colors[priority] || 'transparent';
+    return colors[priority] || '#676879'; // Grey color for None/empty priority
   };
 
   // Add task functionality
