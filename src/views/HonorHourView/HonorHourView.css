@@ -1,0 +1,259 @@
+.honor-hour-view {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #f6f7fb;
+}
+
+.honor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 32px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e6e9ef;
+}
+
+.honor-title-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.honor-title-section h1 {
+  font-size: 28px;
+  font-weight: 400;
+  color: #323338;
+}
+
+.star-btn {
+  background: transparent;
+  color: #676879;
+  font-size: 24px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.star-btn:hover {
+  color: #ffcb00;
+}
+
+.honor-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.export-btn,
+.invite-btn {
+  padding: 10px 20px;
+  background-color: transparent;
+  border: 1px solid #e6e9ef;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #323338;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.export-btn:hover,
+.invite-btn:hover {
+  background-color: #f6f7fb;
+  border-color: #c5c7d0;
+}
+
+.menu-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid #e6e9ef;
+  border-radius: 4px;
+  font-size: 20px;
+  color: #676879;
+  transition: all 0.2s;
+}
+
+.menu-btn:hover {
+  background-color: #f6f7fb;
+  border-color: #c5c7d0;
+}
+
+.honor-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e6e9ef;
+}
+
+.add-widget-btn {
+  padding: 8px 16px;
+  background-color: #0073ea;
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.add-widget-btn:hover {
+  background-color: #0060b9;
+}
+
+.boards-btn {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid #e6e9ef;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #323338;
+  transition: all 0.2s;
+}
+
+.boards-btn:hover {
+  background-color: #f6f7fb;
+  border-color: #c5c7d0;
+}
+
+.controls-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.filter-input {
+  padding: 8px 16px;
+  border: 1px solid #e6e9ef;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #323338;
+  width: 200px;
+  transition: border-color 0.2s;
+}
+
+.filter-input:focus {
+  border-color: #0073ea;
+}
+
+.filter-input::placeholder {
+  color: #c5c7d0;
+}
+
+.control-btn,
+.settings-btn {
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px solid #e6e9ef;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #676879;
+  transition: all 0.2s;
+}
+
+.control-btn:hover,
+.settings-btn:hover {
+  background-color: #f6f7fb;
+  border-color: #c5c7d0;
+}
+
+.honor-content {
+  flex: 1;
+  padding: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 24px;
+  align-content: start;
+  overflow-y: auto;
+}
+
+.board-widget {
+  background-color: #ffffff;
+  border: 1px solid #e6e9ef;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.board-widget:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e6e9ef;
+}
+
+.widget-header h3 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #323338;
+}
+
+.widget-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-icon,
+.menu-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border-radius: 4px;
+  color: #676879;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+.filter-icon:hover,
+.menu-icon:hover {
+  background-color: #f6f7fb;
+}
+
+.widget-body {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.widget-description {
+  font-size: 16px;
+  color: #323338;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.widget-subtitle {
+  font-size: 14px;
+  color: #676879;
+}
+
+.honor-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.honor-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.honor-content::-webkit-scrollbar-thumb {
+  background: #d0d4e4;
+  border-radius: 4px;
+}
+
+.honor-content::-webkit-scrollbar-thumb:hover {
+  background: #b8bcd0;
+}
