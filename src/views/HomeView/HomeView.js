@@ -59,7 +59,8 @@ const HomeView = () => {
                     <span className="workspace-icon">⚡</span> work management › {board.workspace}
                   </p>
                 </div>
-              </div>
+                </div>
+              </Link>
             ))}
           </div>
           <button className="show-all-btn">Show all</button>

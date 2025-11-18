@@ -139,7 +139,7 @@ const BoardView = () => {
       </div>
 
       <div className="board-controls">
-        <button className="new-task-btn">New task ▼</button>
+        <button className="new-task-btn" onClick={handleAddTask}>New task ▼</button>
         <div className="controls-right">
           <button className="control-btn">🔍 Search</button>
           <button className="control-btn">👤 Person</button>

@@ -472,3 +472,15 @@
   justify-content: center;
   font-size: 16px;
 }
+
+/* Board card link styling */
+.board-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.board-card-link:hover {
+  text-decoration: none;
+  color: inherit;
+}
